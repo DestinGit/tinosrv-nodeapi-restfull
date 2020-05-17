@@ -1,7 +1,8 @@
-import * as express from 'express';
+import { Router } from 'express';
 
 interface Controller {
-    router: express.Router
+    path: String
+    router: Router,
 }
 
 export default Controller;

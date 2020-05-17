@@ -9,7 +9,7 @@ class App {
     constructor(controllers: Controller[]) {
         this.app = express();
 
-        // this.connectToTheDatabase();
+        this.connectToTheDatabase();
         this.initializeMiddlewares();
         this.initializeControllers(controllers);
     }
@@ -24,7 +24,12 @@ class App {
 
     private connectToTheDatabase() {
         const { MONGO_USER, MONGO_PASSWORD, MONGO_PATH } = process.env;
-        mongoose.connect(`mongodb://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}`);
+        mongoose.connect(`mongodb://${MONGO_USER}:${MONGO_PASSWORD}${MONGO_PATH}`, { 
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        })
+        .then(() => console.log('Connected'))
+        .catch((err) => console.error(err));
     }
     /**
      * listen
