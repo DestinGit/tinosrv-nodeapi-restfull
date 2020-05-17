@@ -1,6 +1,6 @@
 import * as express from 'express';
-import Post from '../types/post.interface';
-import Controller from '../types/controller.interface';
+import Post from '../interfaces/ipost';
+import Controller from '../interfaces/icontroller';
 
 class PostController implements Controller {
     public path: string = '/posts';
