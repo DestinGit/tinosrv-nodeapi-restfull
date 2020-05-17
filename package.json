@@ -14,11 +14,13 @@
     "dotenv": "^8.2.0",
     "envalid": "^6.0.1",
     "express": "^4.17.1",
+    "mongoose": "^5.9.14",
     "ts-node": "^8.10.1",
     "typescript": "^3.9.2"
   },
   "devDependencies": {
-    "@types/express": "^4.17.6"
+    "@types/express": "^4.17.6",
+    "@types/mongoose": "^5.7.20"
   },
   "repository": {
     "type": "git",
