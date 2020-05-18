@@ -2,6 +2,8 @@ import * as express from 'express';
 import Post from '../interfaces/ipost';
 import Controller from '../interfaces/icontroller';
 import postModel from '../models/posts.model';
+import HttpException from '../exceptions/HttpException';
+import PostNotfoundException from '../exceptions/PostNotFoundException';
 
 class PostController implements Controller {
     public path: string = '/posts';
@@ -30,10 +32,17 @@ class PostController implements Controller {
                     .then(posts => response.send(posts));
     }
 
-	getPostById = (request: express.Request, response: express.Response) => {
+	getPostById = (request: express.Request, response: express.Response, next: express.NextFunction) => {
 		const id = request.params.id;
 		this.posts.findById(id)
-					.then(post => response.status(200).send(post))
+					.then(post => {
+						if (post) {
+							response.status(200).send(post);
+						} else {
+							// next(new HttpException(404, 'Post not found'));
+							next(new PostNotfoundException(id));
+						}
+					})
 	}
 
     createPost = (request: express.Request, response: express.Response) => {
@@ -44,21 +53,27 @@ class PostController implements Controller {
                     .then(savedPost => response.send(savedPost));
 	}
 	
-	modifyPost = (request: express.Request, response: express.Response) => {
+	modifyPost = (request: express.Request, response: express.Response, next: express.NextFunction) => {
 		const id = request.params.id;
 		const postData = request.body;
 
 		this.posts.findByIdAndUpdate(id, postData, {new : true})
-					.then(post => response.status(200).send(post));
+					.then(post => {
+						if (post) response.status(200).send(post);
+						else next(new PostNotfoundException(id));
+					});
 	}
 
-	deletePost = (request: express.Request, response: express.Response) => {
+	deletePost = (request: express.Request, response: express.Response, next: express.NextFunction) => {
 		const id = request.params.id;
 
 		this.posts.findByIdAndDelete(id)
 					.then(success =>  {
-						let statusVal = success ? 200 : 404;
-						response.status(statusVal).send(success);
+						if (success) {
+							response.status(200).send(success);
+						} else {
+							next(new PostNotfoundException(id));
+						}
 					});
 	}
 }
