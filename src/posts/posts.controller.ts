@@ -4,6 +4,8 @@ import Controller from '../interfaces/icontroller';
 import postModel from '../models/posts.model';
 import HttpException from '../exceptions/HttpException';
 import PostNotfoundException from '../exceptions/PostNotFoundException';
+import validationMiddleware from '../middleware/validation.middleware';
+import CreatePostDTO from '../models/entities/post.dto';
 
 class PostController implements Controller {
     public path: string = '/posts';
@@ -22,8 +24,8 @@ class PostController implements Controller {
 		this.router.get(this.path, this.getAllPosts);
 		this.router.get(`${this.path}/:id`, this.getPostById);
 
-		this.router.post(this.path, this.createPost);
-		this.router.patch(`${this.path}/:id`, this.modifyPost);
+		this.router.post(this.path, validationMiddleware(CreatePostDTO), this.createPost);
+		this.router.patch(`${this.path}/:id`, validationMiddleware(CreatePostDTO, true), this.modifyPost);
 		this.router.delete(`${this.path}/:id`, this.deletePost)
     }
 
