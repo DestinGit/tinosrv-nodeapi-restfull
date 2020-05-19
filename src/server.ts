@@ -1,6 +1,6 @@
 import 'dotenv/config';
 import App from './app';
-import PostController from './posts/posts.controller';
+import PostController from './controllers/posts/posts.controller';
 import validateEnv from './utils/validateEnv';
 
 validateEnv();
