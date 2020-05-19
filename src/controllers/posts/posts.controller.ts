@@ -1,11 +1,11 @@
 import * as express from 'express';
-import Post from '../interfaces/ipost';
-import Controller from '../interfaces/icontroller';
-import postModel from '../models/posts.model';
-import HttpException from '../exceptions/HttpException';
-import PostNotfoundException from '../exceptions/PostNotFoundException';
-import validationMiddleware from '../middleware/validation.middleware';
-import CreatePostDTO from '../models/entities/post.dto';
+import Post from '../../interfaces/ipost';
+import Controller from '../../interfaces/icontroller';
+import postModel from '../../models/posts.model';
+import HttpException from '../../exceptions/HttpException';
+import PostNotfoundException from '../../exceptions/PostNotFoundException';
+import validationMiddleware from '../../middleware/validation.middleware';
+import CreatePostDTO from '../../models/entities/post.dto';
 
 class PostController implements Controller {
     public path: string = '/posts';
