@@ -6,7 +6,8 @@
       "baseUrl": "./src",
       "strict": true,
       "noImplicitAny": false,
-      "--experimentalDecorators": true
+      "experimentalDecorators": true,
+      "strictPropertyInitialization": false
     },
     "include": [
       "src/**/*.ts"
