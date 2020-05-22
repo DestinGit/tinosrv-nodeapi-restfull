@@ -9,8 +9,8 @@ import UserWithThatEmailAlreadyExistsException from '../../exceptions/UserWithTh
 import WrongCredentialsException from '../../exceptions/WrongCredentialsException';
 
 export default class AuthenticationController implements Controller{
-    path: String = '/auth';
-    router: express.Router;
+    path: string = '/auth';
+    router: express.Router = express.Router();
     private user = userModel;
     
     constructor() {

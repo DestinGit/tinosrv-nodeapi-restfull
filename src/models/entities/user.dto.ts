@@ -1,14 +1,14 @@
 import { IsString } from 'class-validator';
 
 class CreateUserDTO {
-    @IsString()
-    name: string;
+    // @IsString()
+    public name: string;
 
-    @IsString()
-    email: string;
+    // @IsString()
+    public email: string;
 
-    @IsString()
-    password: string;
+    // @IsString()
+    public password: string;
 }
 
 export default CreateUserDTO;
