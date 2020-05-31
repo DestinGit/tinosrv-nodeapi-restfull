@@ -23,8 +23,15 @@ export default class AuthenticationController implements Controller{
 
     private initializeRoutes() {
         this.router.post(`${this.path}/register`, validationMiddleware(CreateUserDTO), this.registration);
-        this.router.post(`${this.path}/login`, validationMiddleware(CreateLogInDTO), this.loggingIn)
+        this.router.post(`${this.path}/login`, validationMiddleware(CreateLogInDTO), this.loggingIn);
+        // this.router.get(this.path, this.getAllUsers);
     }
+
+    // private getAllUsers = (request: express.Request, response: express.Response) => {
+    //     this.user.find().then(users => {
+    //         response.status(200).send(users);
+    //     })
+    // }
 
     private createToken(user: User) {
         const expiresIn = 60 * 60;

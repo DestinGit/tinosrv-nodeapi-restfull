@@ -5,6 +5,8 @@ import Post from '../../interfaces/ipost';
 import postModel from '../../models/posts.model';
 import PostNotfoundException from '../../exceptions/PostNotFoundException';
 import CreatePostDTO from '../../models/entities/post.dto';
+import authMiddleware from '../../middleware/auth.middleware';
+import RequestWithUser from '../../interfaces/irequestWithUser';
 
 class PostController implements Controller {
     public path: string = '/posts';
@@ -23,9 +25,11 @@ class PostController implements Controller {
 		this.router.get(this.path, this.getAllPosts);
 		this.router.get(`${this.path}/:id`, this.getPostById);
 
-		this.router.post(this.path, validationMiddleware(CreatePostDTO), this.createPost);
-		this.router.patch(`${this.path}/:id`, validationMiddleware(CreatePostDTO, true), this.modifyPost);
-		this.router.delete(`${this.path}/:id`, this.deletePost)
+		this.router
+		.all(`${this.path}/*`, authMiddleware)
+		.patch(`${this.path}/:id`, validationMiddleware(CreatePostDTO, true), this.modifyPost)
+		.delete(`${this.path}/:id`, this.deletePost)
+		.post(this.path, authMiddleware, validationMiddleware(CreatePostDTO), this.createPost);
     }
 
     getAllPosts = (request: express.Request, response: express.Response) => {
@@ -46,15 +50,18 @@ class PostController implements Controller {
 					})
 	}
 
-    createPost = (request: express.Request, response: express.Response) => {
+    private createPost = (request: RequestWithUser, response: express.Response) => {
         let postData: Post = request.body;
-        const createPost = new this.posts(postData);
+        const createPost = new this.posts({
+			...postData,
+			author : request.user._id
+		});
 
         createPost.save()
                     .then(savedPost => response.send(savedPost));
 	}
 	
-	modifyPost = (request: express.Request, response: express.Response, next: express.NextFunction) => {
+	private modifyPost = (request: express.Request, response: express.Response, next: express.NextFunction) => {
 		const id = request.params.id;
 		const postData = request.body;
 
