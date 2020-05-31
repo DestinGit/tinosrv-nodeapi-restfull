@@ -7,10 +7,10 @@ import userModel from '../../models/users.model';
 import * as bcrypt from 'bcrypt';
 import UserWithThatEmailAlreadyExistsException from '../../exceptions/UserWithThatEmailAlreadyExistsException';
 import WrongCredentialsException from '../../exceptions/WrongCredentialsException';
-import DataStoredInToken from '../../interfaces/datastoredintoken';
+import DataStoredInToken from '../../interfaces/idatastoredintoken';
 import User from '../../interfaces/iuser';
 import * as jwt from 'jsonwebtoken';
-import TokenData from '../../interfaces/tokendata';
+import TokenData from '../../interfaces/itokendata';
 
 export default class AuthenticationController implements Controller{
     path: string = '/auth';
