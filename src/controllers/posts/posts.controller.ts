@@ -32,9 +32,10 @@ class PostController implements Controller {
 		.post(this.path, authMiddleware, validationMiddleware(CreatePostDTO), this.createPost);
     }
 
-    getAllPosts = (request: express.Request, response: express.Response) => {
-        this.posts.find()
-                    .then(posts => response.send(posts));
+    getAllPosts = async (request: express.Request, response: express.Response) => {
+		const posts = await this.posts.find()
+		.populate('author', '-password');
+                    response.send(posts);
     }
 
 	getPostById = (request: express.Request, response: express.Response, next: express.NextFunction) => {
@@ -50,15 +51,16 @@ class PostController implements Controller {
 					})
 	}
 
-    private createPost = (request: RequestWithUser, response: express.Response) => {
+    private createPost = async (request: RequestWithUser, response: express.Response) => {
         let postData: Post = request.body;
         const createPost = new this.posts({
 			...postData,
-			authorId : request.user._id
+			author : request.user._id
 		});
 
-        createPost.save()
-                    .then(savedPost => response.send(savedPost));
+		const savedPost = await createPost.save();
+						await savedPost.populate('author', '-password').execPopulate();
+                response.status(200).send(savedPost);
 	}
 	
 	private modifyPost = (request: express.Request, response: express.Response, next: express.NextFunction) => {

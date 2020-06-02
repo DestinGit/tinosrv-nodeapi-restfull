@@ -1,4 +1,4 @@
-import { IsString } from 'class-validator';
+import { IsString, IsObject } from 'class-validator';
 
 class CreateUserDTO {
     // @IsString()
@@ -9,6 +9,9 @@ class CreateUserDTO {
 
     // @IsString()
     public password: string;
+    
+    // @IsObject()
+    public address: object
 }
 
 export default CreateUserDTO;
