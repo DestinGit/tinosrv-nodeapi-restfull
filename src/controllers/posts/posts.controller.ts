@@ -54,7 +54,7 @@ class PostController implements Controller {
         let postData: Post = request.body;
         const createPost = new this.posts({
 			...postData,
-			author : request.user._id
+			authorId : request.user._id
 		});
 
         createPost.save()

@@ -34,19 +34,6 @@ export default class AuthenticationController implements Controller{
     //     })
     // }
 
-    private createToken(user: User) {
-        const expiresIn = 60 * 60;
-        const secret = process.env.JWT_SECRET;    
-        const dataStoredInToken: DataStoredInToken = {
-            _id: user._id,
-        };
-
-        return {
-            expiresIn,
-            token: jwt.sign(dataStoredInToken, secret, { expiresIn })
-        }
-    }
-
     private registration = async (req: express.Request, res: express.Response, next: express.NextFunction) => {
         const userData: CreateUserDTO = req.body;
 
@@ -95,4 +82,18 @@ export default class AuthenticationController implements Controller{
     private createCookie(tokenData: TokenData) {
         return `Authorization=${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn}`;
     }
+    
+    private createToken(user: User) {
+        const expiresIn = 60 * 60;
+        const secret = process.env.JWT_SECRET;    
+        const dataStoredInToken: DataStoredInToken = {
+            _id: user._id,
+        };
+
+        return {
+            expiresIn,
+            token: jwt.sign(dataStoredInToken, secret, { expiresIn })
+        }
+    }
+
 }
