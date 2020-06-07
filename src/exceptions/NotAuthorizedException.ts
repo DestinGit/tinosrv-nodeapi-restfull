@@ -2,7 +2,7 @@ import HttpException from "./HttpException";
 
 class NotAuthorizedException extends HttpException {
     constructor() {
-        super(400, 'Not Authorized');
+        super(403, 'Not Authorized');
     }
 }
 
