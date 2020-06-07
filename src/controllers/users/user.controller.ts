@@ -4,6 +4,7 @@ import postModel from '../../models/posts.model';
 import authMiddleware from '../../middleware/auth.middleware';
 import RequestWithUser from '../../interfaces/irequestWithUser';
 import { NextFunction } from 'express';
+import NotAuthorizedException from '../../exceptions/NotAuthorizedException';
 
 class UserController implements Controller{
     public path: String = '/users';
@@ -14,18 +15,18 @@ class UserController implements Controller{
         this.initializeRoutes();
     }
 
-    initializeRoutes(): void {
+    private initializeRoutes(): void {
         this.router.get(`${this.path}/:id/posts`, authMiddleware, () => {})
-        // throw new Error("Method not implemented.");
     }
 
     private getAllPostsOfUser = async (request: RequestWithUser, response: express.Response, next: express.NextFunction) => {
-        // const userId = request.params.id;
-        // if (userId === request.user._id.toString()) {
-        //   const posts = await this.post.find({ author: userId });
-        //   response.send(posts);
-        // }        
+        const userId = request.params.id;
+        if (userId === request.user._id.toString()) {
+          const posts = await this.post.find({ author: userId });
+          response.status(200).send(posts);
+        }
+        next(new NotAuthorizedException())        
     }
-
-    
 }
+
+export default UserController;
